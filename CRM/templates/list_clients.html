@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %} Nos clients {% endblock %}
+
+{% block content %}
+    <h1>Liste de nos clients</h1>
+    <ul>
+        {% for i in data_clients %}
+            <li>{{ i }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/">Retour à l'accueil</a>
+{% endblock %}

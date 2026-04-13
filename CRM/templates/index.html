@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{%block title %} Accueil {% endblock %}
+
+{% block content %}
+    <h1>Mon outil CRM</h1>
+    <p>Bienvenue dans ce projet CRM!</p>
+    <p>Nombre de clients : {{ nbr_clients }}</p>
+    <p>Nom de la boutique : {{ nom_boutique }}</p>
+    <a href="/list_clients/">Voir la liste des clients</a><br>
+    <a href="/add_client">Ajouter un nouveau client</a>
+{% endblock %}
