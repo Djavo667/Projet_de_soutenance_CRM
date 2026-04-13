@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 from .forms import ClientForm
 
-#list des clients
+#une liste des clients
 data_clients = [ "client1", "client2", "client3", "client4", "client5" ]
 # Create your views here.
 def home_page(request):
@@ -15,5 +15,12 @@ def list_clients(request):
     return render(request, "list_clients.html", context={'data_clients': data_clients})
 
 def add_client(request):
-    form = ClientForm()
-    return render(request, "add_client.html", context={'form': form})
+    if request.method == "POST":
+        form = ClientForm(request.POST)
+        if form.is_valid():
+            # data_clients.append(form.cleaned_data['nom'])4
+            return HttpResponse("Client ajouté avec succès !")
+    else:
+        
+        form = ClientForm()
+        return render(request, "add_client.html", context={'form': form})
