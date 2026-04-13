@@ -8,9 +8,9 @@ class client(models.Model):
     prenom = models.CharField(max_length=100, verbose_name="Prénom")
     sexe = models.CharField(max_length=1, choices=[('M', 'Masculin'), ('F', 'Féminin')], verbose_name="Sexe")
     email = models.EmailField(verbose_name="Email")
-    telephone = models.CharField(max_length=20, verbose_name="Téléphone")
+    telephone = models.CharField(max_length=12, verbose_name="Téléphone")
     adresse = models.CharField(max_length=200, verbose_name="Adresse")
-    description = models.TextField()
+    description = models.TextField(default="vide", verbose_name="Description")
     date_enregistrement = models.DateTimeField(
         default=timezone.now, 
         verbose_name="Date d'enregistrement"

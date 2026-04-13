@@ -1,6 +1,7 @@
 from django.contrib import admin
-
+from .models import *
 # Register your models here.
+admin.site.register(client)
 class clientAdmin(admin.ModelAdmin):
     # Colonnes affichées dans la liste
     list_display = ("nom", "prenom", "sexe", "email", "telephone", "actif" , "date_enregistrement")
