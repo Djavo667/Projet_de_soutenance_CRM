@@ -3,10 +3,33 @@
 
 {% block content %}
     <h1>Liste de nos clients</h1>
-    <ul>
-        {% for i in data_clients %}
-            <li>{{ i }}</li>
-        {% endfor %}
-    </ul>
+    {% if data_clients %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Sexe</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Actif</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in data_clients %}
+                    <tr>
+                        <td>{{ client.nom }}</td>
+                        <td>{{ client.prenom }}</td>
+                        <td>{{ client.sexe }}</td>
+                        <td>{{ client.email }}</td>
+                        <td>{{ client.telephone }}</td>
+                        <td>{{ client.actif|yesno:"Oui,Non" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucun client enregistré.</p>
+    {% endif %}
     <a href="/">Retour à l'accueil</a>
 {% endblock %}

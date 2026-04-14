@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %} Liste des produits {% endblock %}
+
+{% block content %}
+    <h1>Liste des produits</h1>
+    {% if produits %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Marque</th>
+                    <th>Catégorie</th>
+                    <th>Prix</th>
+                    <th>Stock</th>
+                    <th>Actif</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produit in produits %}
+                    <tr>
+                        <td>{{ produit.nom }}</td>
+                        <td>{{ produit.marque }}</td>
+                        <td>{{ produit.catégorie }}</td>
+                        <td>{{ produit.prix }} Francs CFA</td>
+                        <td>{{ produit.stock }}</td>
+                        <td>{{ produit.actif|yesno:"Oui,Non" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucun produit enregistré.</p>
+    {% endif %}
+    <a href="/">Retour à l'accueil</a>
+{% endblock %}

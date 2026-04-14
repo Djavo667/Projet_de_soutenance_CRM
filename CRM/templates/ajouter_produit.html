@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %} Ajouter un produit {% endblock %}
+
+{% block content %}
+    <h1>Ajouter un produit</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Ajouter le produit</button>
+    </form>
+    <a href="/">Retour à l'accueil</a>
+{% endblock %}

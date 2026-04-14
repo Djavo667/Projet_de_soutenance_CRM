@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %} Rechercher numéro de client {% endblock %}
+
+{% block content %}
+    <h1>Recherche de client</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="num_client" id="num_client" placeholder="Numéro de client">
+        <button type="submit">Rechercher</button>
+    </form>
+    {% if message %}
+        <p><strong>{{ message }}</strong></p>
+    {% endif %}
+    <a href="/">Retour à l'accueil</a>
+{% endblock %}

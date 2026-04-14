@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %} Ajouter une vente {% endblock %}
+
+{% block content %}
+    <h1>Ajouter une vente</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Enregistrer la vente</button>
+    </form>
+    <a href="/">Retour à l'accueil</a>
+{% endblock %}

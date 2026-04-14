@@ -1,15 +1,12 @@
 from django.contrib import admin
-from .models import *
+from .models import client, Catégorie, Produit, Vente
+
 # Register your models here.
-admin.site.register(client)
+@admin.register(client)
 class clientAdmin(admin.ModelAdmin):
-    # Colonnes affichées dans la liste
-    list_display = ("nom", "prenom", "sexe", "email", "telephone", "actif" , "date_enregistrement")
-    # Filtres dans la barre latérale
+    list_display = ("nom", "prenom", "sexe", "email", "telephone", "actif", "date_enregistrement")
     search_fields = ("nom", "prenom", "email", "telephone")
-    # Filtre dans la barre latérale
     list_filter = ("sexe", "actif", "date_enregistrement")
-    # Titres des sections
     fieldsets = (
         ('Informations principales', {
             'fields': ('nom', 'prenom', 'telephone')
@@ -23,3 +20,36 @@ class clientAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
+
+@admin.register(Catégorie)
+class CatégorieAdmin(admin.ModelAdmin):
+    list_display = ("nom", "description")
+    search_fields = ("nom",)
+    list_filter = ("nom",)
+
+@admin.register(Produit)
+class ProduitAdmin(admin.ModelAdmin):
+    list_display = ("nom", "marque", "catégorie", "prix", "stock", "stock_disponible")
+    search_fields = ("nom", "marque")
+    list_filter = ("catégorie", "marque")
+    fieldsets = (
+        ('Identité', {
+            'fields': ('nom', 'marque', 'catégorie')
+        }),
+        ('Commercial', {
+            'fields': ('prix', 'stock', 'actif'),
+            'classes': ('wide',)
+        }),
+        ('Visuel', {
+            'fields': ('image',),
+            'classes': ('collapse',)
+        }),
+    )
+    readonly_fields = ('date_ajout',)
+
+@admin.register(Vente)
+class VenteAdmin(admin.ModelAdmin):
+    list_display = ("client", "produit", "date_vente", "quantite", "total")
+    search_fields = ("client__nom", "produit__nom")
+    list_filter = ("date_vente",)
+    readonly_fields = ("date_vente", "total")

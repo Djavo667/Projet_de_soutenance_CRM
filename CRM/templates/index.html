@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{%block title %} Accueil {% endblock %}
+{% block title %} Accueil {% endblock %}
 
 {% block content %}
     <h1>Mon outil CRM</h1>
@@ -7,5 +7,10 @@
     <p>Nombre de clients : {{ nbr_clients }}</p>
     <p>Nom de la boutique : {{ nom_boutique }}</p>
     <a href="/list_clients/">Voir la liste des clients</a><br>
-    <a href="/add_client">Ajouter un nouveau client</a>
+    <a href="/add_client/">Ajouter un nouveau client</a><br>
+    <a href="/list_produits/">Voir la liste des produits</a><br>
+    <a href="/add_produit/">Ajouter un nouveau produit</a><br>
+    <a href="/list_ventes/">Voir la liste des ventes</a><br>
+    <a href="/add_vente/">Ajouter une nouvelle vente</a><br>
+    <a href="/tracking/">Rechercher un client</a>
 {% endblock %}

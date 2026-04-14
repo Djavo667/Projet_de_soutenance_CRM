@@ -16,11 +16,25 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from LE_CRM.views import *
+from LE_CRM.views import (
+    home_page,
+    liste_clients,
+    ajouter_client,
+    liste_produits,
+    ajouter_produit,
+    liste_ventes,
+    ajouter_vente,
+    tracking,
+)
 
 urlpatterns = [
-    path('', home_page),
-    path('list_clients/', list_clients),
-    path('add_client/', add_client),
+    path('', home_page, name='home'),
+    path('list_clients/', liste_clients, name='liste_clients'),
+    path('add_client/', ajouter_client, name='ajouter_client'),
+    path('list_produits/', liste_produits, name='liste_produits'),
+    path('add_produit/', ajouter_produit, name='ajouter_produit'),
+    path('list_ventes/', liste_ventes, name='liste_ventes'),
+    path('add_vente/', ajouter_vente, name='ajouter_vente'),
+    path('tracking/', tracking, name='tracking'),
     path('admin/', admin.site.urls),
 ]
