@@ -114,3 +114,32 @@ class Vente(models.Model):
 
     def __str__(self):
         return f"Vente de {self.produit} à {self.client} le {self.date_vente.strftime('%Y-%m-%d %H:%M:%S')}"
+
+
+class Todo(models.Model):
+    ACTION_CHOICES = [
+        ('appel', 'Appel'),
+        ('sms', 'SMS'),
+        ('email', 'Email'),
+        ('rendez_vous', 'Rendez-vous'),
+    ]
+    STATUT_CHOICES = [
+        ('a_faire', 'À faire'),
+        ('termine', 'Terminé'),
+        ('annule', 'Annulé'),
+    ]
+
+    client = models.ForeignKey(client, on_delete=models.CASCADE, verbose_name="Client")
+    type_action = models.CharField(max_length=20, choices=ACTION_CHOICES, verbose_name="Type d'action")
+    date_action = models.DateTimeField(default=timezone.now, verbose_name="Date et heure")
+    statut = models.CharField(max_length=20, choices=STATUT_CHOICES, default='a_faire', verbose_name="Statut")
+    description = models.TextField(blank=True, verbose_name="Description")
+    date_creation = models.DateTimeField(default=timezone.now, verbose_name="Date de création")
+
+    class Meta:
+        verbose_name = "Tâche"
+        verbose_name_plural = "Tâches"
+        ordering = ['-date_action']
+
+    def __str__(self):
+        return f"{self.get_type_action_display()} pour {self.client} le {self.date_action.strftime('%Y-%m-%d %H:%M')}"

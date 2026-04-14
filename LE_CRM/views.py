@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import ClientForm, ProduitForm, VenteForm
-from .models import client, Produit, Vente
+from .forms import ClientForm, ProduitForm, VenteForm, TodoForm
+from .models import client, Produit, Vente, Todo
 
 # Vue d'accueil du CRM
 def home_page(request):
@@ -60,6 +60,40 @@ def ajouter_vente(request):
     else:
         form = VenteForm()
     return render(request, 'ajouter_vente.html', context={'form': form})
+
+# Modifier le statut d'une vente existante
+def changer_statut_vente(request, vente_id):
+    vente = get_object_or_404(Vente, id=vente_id)
+    if request.method == 'POST':
+        statut = request.POST.get('statut')
+        if statut in dict(Vente.statut_choix):
+            vente.statut = statut
+            vente.save()
+    return redirect('liste_ventes')
+
+# Liste des tâches à faire avec les clients
+def todo_list(request):
+    todos = Todo.objects.select_related('client').all()
+    return render(request, 'todo_list.html', context={'todos': todos})
+
+# Ajouter une tâche à la to-do list client
+def ajouter_todo(request):
+    if request.method == 'POST':
+        form = TodoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('todo_list')
+    else:
+        form = TodoForm()
+    return render(request, 'add_todo.html', context={'form': form})
+
+# Marquer une tâche comme effectuée
+def marquer_todo_effectue(request, todo_id):
+    todo = get_object_or_404(Todo, id=todo_id)
+    if request.method == 'POST':
+        todo.statut = 'termine'
+        todo.save()
+    return redirect('todo_list')
 
 # Recherche d'un client par téléphone
 def tracking(request):

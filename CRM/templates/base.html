@@ -4,6 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} Mon CRM {% endblock %}</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        .todo-termine {
+            background-color: #e6ffe6;
+            color: #1a6b1a;
+        }
+        .todo-annule {
+            background-color: #ffe6e6;
+            color: #a12a2a;
+        }
+        button {
+            padding: 0.4rem 0.75rem;
+            border: 1px solid #333;
+            background-color: #f3f3f3;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ddd;
+        }
+    </style>
 </head>
 <body>
     {% block content %}

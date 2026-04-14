@@ -24,6 +24,10 @@ from LE_CRM.views import (
     ajouter_produit,
     liste_ventes,
     ajouter_vente,
+    changer_statut_vente,
+    todo_list,
+    ajouter_todo,
+    marquer_todo_effectue,
     tracking,
 )
 
@@ -35,6 +39,10 @@ urlpatterns = [
     path('add_produit/', ajouter_produit, name='ajouter_produit'),
     path('list_ventes/', liste_ventes, name='liste_ventes'),
     path('add_vente/', ajouter_vente, name='ajouter_vente'),
+    path('vente_status/<int:vente_id>/', changer_statut_vente, name='changer_statut_vente'),
+    path('todo/', todo_list, name='todo_list'),
+    path('add_todo/', ajouter_todo, name='ajouter_todo'),
+    path('todo/termine/<int:todo_id>/', marquer_todo_effectue, name='marquer_todo_effectue'),
     path('tracking/', tracking, name='tracking'),
     path('admin/', admin.site.urls),
 ]

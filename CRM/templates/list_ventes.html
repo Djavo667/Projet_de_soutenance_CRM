@@ -14,6 +14,7 @@
                     <th>Total</th>
                     <th>Statut</th>
                     <th>Date</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +27,17 @@
                         <td>{{ vente.total }} Francs CFA</td>
                         <td>{{ vente.statut }}</td>
                         <td>{{ vente.date_vente }}</td>
+                        <td>
+                            <form method="post" action="{% url 'changer_statut_vente' vente.id %}">
+                                {% csrf_token %}
+                                <select name="statut">
+                                    <option value="en_cours" {% if vente.statut == 'en_cours' %}selected{% endif %}>En cours</option>
+                                    <option value="terminée" {% if vente.statut == 'terminée' %}selected{% endif %}>Terminée</option>
+                                    <option value="annulée" {% if vente.statut == 'annulée' %}selected{% endif %}>Annulée</option>
+                                </select>
+                                <button type="submit">Mettre à jour</button>
+                            </form>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -33,5 +45,6 @@
     {% else %}
         <p>Aucune vente enregistrée.</p>
     {% endif %}
+    <a href="/todo/">Voir ma to-do list</a><br>
     <a href="/">Retour à l'accueil</a>
 {% endblock %}

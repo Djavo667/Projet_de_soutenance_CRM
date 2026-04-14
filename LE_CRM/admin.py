@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import client, Catégorie, Produit, Vente
+from .models import client, Catégorie, Produit, Vente, Todo
 
 # Register your models here.
 @admin.register(client)
@@ -49,7 +49,15 @@ class ProduitAdmin(admin.ModelAdmin):
 
 @admin.register(Vente)
 class VenteAdmin(admin.ModelAdmin):
-    list_display = ("client", "produit", "date_vente", "quantite", "total")
+    list_display = ("client", "produit", "date_vente", "quantite", "total", "statut")
     search_fields = ("client__nom", "produit__nom")
-    list_filter = ("date_vente",)
+    list_filter = ("date_vente", "statut")
     readonly_fields = ("date_vente", "total")
+
+
+@admin.register(Todo)
+class TodoAdmin(admin.ModelAdmin):
+    list_display = ("client", "get_type_action_display", "date_action", "statut")
+    search_fields = ("client__nom", "client__prenom", "description")
+    list_filter = ("type_action", "statut", "date_action")
+    ordering = ("-date_action",)

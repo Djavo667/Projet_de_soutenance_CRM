@@ -36,4 +36,23 @@ class VenteForm(forms.ModelForm):
             'quantite': forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),
             'prix_unitaire': forms.NumberInput(attrs={'class': 'form-control'}),
             'statut': forms.Select(attrs={'class': 'form-select'}),
-        }   
+        }
+
+
+class TodoForm(forms.ModelForm):
+    class Meta:
+        model = Todo
+        fields = ['client', 'type_action', 'date_action', 'statut', 'description']
+        widgets = {
+            'client': forms.Select(attrs={'class': 'form-select'}),
+            'type_action': forms.Select(attrs={'class': 'form-select'}),
+            'date_action': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'statut': forms.Select(attrs={'class': 'form-select'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
+    date_action = forms.DateTimeField(
+        widget=forms.DateTimeInput(format='%Y-%m-%dT%H:%M', attrs={'type': 'datetime-local', 'class': 'form-control'}),
+        input_formats=['%Y-%m-%dT%H:%M'],
+        required=True,
+        label='Date et heure',
+    )   

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %} To-do list {% endblock %}
+
+{% block content %}
+    <h1>To-do list des actions client</h1>
+    <a href="/add_todo/">Ajouter une nouvelle tâche</a>
+    {% if todos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Client</th>
+                    <th>Type</th>
+                    <th>Date et heure</th>
+                    <th>Statut</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for todo in todos %}
+                    <tr class="{% if todo.statut == 'termine' %}todo-termine{% elif todo.statut == 'annule' %}todo-annule{% endif %}">
+                        <td>{{ todo.client }}</td>
+                        <td>{{ todo.get_type_action_display }}</td>
+                        <td>{{ todo.date_action }}</td>
+                        <td>{{ todo.get_statut_display }}</td>
+                        <td>{{ todo.description }}</td>
+                        <td>
+                            {% if todo.statut != 'termine' %}
+                                <form method="post" action="{% url 'marquer_todo_effectue' todo.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit">Marquer comme effectué</button>
+                                </form>
+                            {% else %}
+                                <span>Déjà effectué</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucune tâche enregistrée pour le moment.</p>
+    {% endif %}
+    <a href="/">Retour à l'accueil</a>
+{% endblock %}
