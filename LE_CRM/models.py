@@ -3,7 +3,7 @@ from django.db import models
 from django.core.validators import MinValueValidator
 
 # Create your models here.
-class client(models.Model):
+class Client(models.Model):
     nom = models.CharField(max_length=100, verbose_name="Nom")
     prenom = models.CharField(max_length=100, verbose_name="Prénom")
     sexe = models.CharField(max_length=1, choices=[('M', 'Masculin'), ('F', 'Féminin')], verbose_name="Sexe")
@@ -90,7 +90,7 @@ class Produit(models.Model):
 Produit.stock_disponible.boolean = True
 
 class Vente(models.Model):
-    client = models.ForeignKey(client, on_delete=models.CASCADE, verbose_name="Client")
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name="Client")
     produit = models.ForeignKey(Produit, on_delete=models.CASCADE, verbose_name="Produit")
     quantite = models.PositiveIntegerField(default=1, verbose_name="Quantité")
     prix_unitaire = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], verbose_name="Prix unitaire")
@@ -129,7 +129,7 @@ class Todo(models.Model):
         ('annule', 'Annulé'),
     ]
 
-    client = models.ForeignKey(client, on_delete=models.CASCADE, verbose_name="Client")
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name="Client")
     type_action = models.CharField(max_length=20, choices=ACTION_CHOICES, verbose_name="Type d'action")
     date_action = models.DateTimeField(default=timezone.now, verbose_name="Date et heure")
     statut = models.CharField(max_length=20, choices=STATUT_CHOICES, default='a_faire', verbose_name="Statut")

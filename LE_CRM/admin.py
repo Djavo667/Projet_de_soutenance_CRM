@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import client, Catégorie, Produit, Vente, Todo
+from .models import *
 
 # Register your models here.
-@admin.register(client)
-class clientAdmin(admin.ModelAdmin):
+@admin.register(Client)
+class ClientAdmin(admin.ModelAdmin):
     list_display = ("nom", "prenom", "sexe", "email", "telephone", "actif", "date_enregistrement")
     search_fields = ("nom", "prenom", "email", "telephone")
     list_filter = ("sexe", "actif", "date_enregistrement")

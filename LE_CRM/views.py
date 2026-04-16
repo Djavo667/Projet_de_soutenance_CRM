@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import ClientForm, ProduitForm, VenteForm, TodoForm
-from .models import client, Produit, Vente, Todo
+from .models import Client, Produit, Vente, Todo
 
 # Vue d'accueil du CRM
 def home_page(request):
-    nbr_clients = client.objects.count()
+    nbr_clients = Client.objects.count()
     nom_boutique = "S_Cosmetique"
     context = {
         'nbr_clients': nbr_clients,
@@ -15,7 +15,7 @@ def home_page(request):
 
 # Créer vue liste_clients pour afficher tous les clients
 def liste_clients(request):
-    clients = client.objects.all()
+    clients = Client.objects.all()
     return render(request, 'list_clients.html', context={'data_clients': clients})
 
 # Créer vue ajouter_client avec ClientForm
@@ -102,8 +102,8 @@ def tracking(request):
     if request.method == 'POST':
         num_client = request.POST.get('num_client', '').strip()
         try:
-            client_trouve = client.objects.get(telephone=num_client)
+            client_trouve = Client.objects.get(telephone=num_client)
             message = f"Client trouvé : {client_trouve}"
-        except client.DoesNotExist:
+        except Client.DoesNotExist:
             message = "Aucun client trouvé avec ce numéro."
     return render(request, 'tracking.html', context={'message': message, 'client_trouve': client_trouve})

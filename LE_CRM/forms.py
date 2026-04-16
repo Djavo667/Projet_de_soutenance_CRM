@@ -4,7 +4,7 @@ from .models import *
 
 class ClientForm(forms.ModelForm):
     class Meta:
-        model = client
+        model = Client
         fields = ['nom', 'prenom', 'sexe', 'email', 'telephone', 'adresse', 'description']
         widgets = {
             'description': forms.Textarea(attrs={'class': 'form-control'}),
