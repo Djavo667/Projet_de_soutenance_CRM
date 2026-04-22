@@ -3,10 +3,12 @@
 
 {% block content %}
     <h1>Liste de nos clients</h1>
+    <a href="/add_client/">Ajouter un nouveau client</a><br>
+    
     {% if data_clients %}
-        <table>
-            <thead>
-                <tr>
+        <table class="table">
+            <thead  class="thead">
+                <tr class="tr">
                     <th>Nom</th>
                     <th>Prénom</th>
                     <th>Sexe</th>

@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-
-from .forms import ClientForm, ProduitForm, VenteForm, TodoForm
-from .models import Client, Produit, Vente, Todo
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from .forms import *
+from .models import *
 
 # Vue d'accueil du CRM
 def home_page(request):
@@ -107,3 +108,27 @@ def tracking(request):
         except Client.DoesNotExist:
             message = "Aucun client trouvé avec ce numéro."
     return render(request, 'tracking.html', context={'message': message, 'client_trouve': client_trouve})
+
+
+def inscription(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('connexion')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'inscription.html', context={'form': form})
+
+def connexion(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            error_message = "Nom d'utilisateur ou mot de passe incorrect."
+            return render(request, 'connexion.html', context={'error_message': error_message})
+    return render(request, 'connexion.html')

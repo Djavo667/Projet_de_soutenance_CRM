@@ -1,6 +1,7 @@
 from django import forms
 
 from .models import *
+from django.contrib.auth.forms import UserCreationForm
 
 class ClientForm(forms.ModelForm):
     class Meta:
@@ -56,3 +57,17 @@ class TodoForm(forms.ModelForm):
         required=True,
         label='Date et heure',
     )   
+
+class CustomUserCreationForm(UserCreationForm):
+    password1 = forms.CharField(
+        label='Mot de passe', 
+        strip=False, 
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+    )
+    password2 = forms.CharField(
+        label='Confirmer le mot de passe', 
+        strip=False, 
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+    )
+    class Meta(UserCreationForm.Meta):
+        fields = UserCreationForm.Meta.fields + ('password1', 'password2')

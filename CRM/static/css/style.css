@@ -1,0 +1,93 @@
+/* Styles globaux pour les tableaux */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+/* Classe spécifique pour les tableaux */
+.table {
+    border: 2px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #333;
+}
+
+.table td {
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+    background-color: #e0f7fa;
+    cursor: pointer;
+}
+
+.table th, .table td {
+    border-right: 1px solid #ddd;
+}
+
+.table th:last-child, .table td:last-child {
+    border-right: none;
+}
+
+/* Styles pour les tâches */
+.todo-termine {
+    background-color: #e6ffe6;
+    color: #1a6b1a;
+}
+
+.todo-annule {
+    background-color: #ffe6e6;
+    color: #a12a2a;
+}
+
+/* Styles pour les boutons */
+button {
+    padding: 0.4rem 0.75rem;
+    border: 1px solid #333;
+    background-color: #f3f3f3;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #76e687;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #d6cfcf;
+    margin: 30px;
+    padding: 20px;
+}
+
+.nav_bar {
+    position: relative;
+    display: inline;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 60px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    border: 0.5px solid #ccc;
+}

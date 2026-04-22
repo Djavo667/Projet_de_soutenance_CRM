@@ -1,44 +1,39 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} Mon CRM {% endblock %}</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1rem;
-        }
-        th, td {
-            padding: 0.75rem;
-            border: 1px solid #ccc;
-            text-align: left;
-        }
-        .todo-termine {
-            background-color: #e6ffe6;
-            color: #1a6b1a;
-        }
-        .todo-annule {
-            background-color: #ffe6e6;
-            color: #a12a2a;
-        }
-        button {
-            padding: 0.4rem 0.75rem;
-            border: 1px solid #333;
-            background-color: #f3f3f3;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #ddd;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
-<body>
-    {% block content %}
-    {% endblock %}
-    <footer>
-        <p>Copyright © 2026 Mon CRM. Tous droits réservés à Souleymane.</p>
+<body class="body">
+    <header class="header">
+        <h1 class="logo">Mon CRM</h1>
+        <nav class="nav">
+            <ul class="nav_list">
+                <li class="nav_bar"><a href="/">Accueil</a></li>
+                <li class="nav_bar"><a href="/list_clients/">Clients</a></li>
+                <li class="nav_bar"><a href="/list_produits/">Produits</a></li>
+                <li class="nav_bar"><a href="/list_ventes/">Ventes</a></li>
+                <li class="nav_bar"><a href="/todo/">To-Do List</a></li>
+                <li class="nav_bar"><a href="/tracking/">Rechercher un client</a></li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <main class="main">
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer class="footer">
+        <p>Copyright © 2026 CRM_Parfumerie. Tous droits réservés à Souleymane Maïga, Ousmane Konaté, Assétou Ndiaye.</p>
     </footer>
+
+
 </body>
 </html>

@@ -102,6 +102,7 @@ class Vente(models.Model):
         ('annulée', 'Annulée'),
     ]
     statut = models.CharField(max_length=20, choices=statut_choix, default='en_cours', verbose_name="Statut")
+    stock_adjusted = models.BooleanField(default=False, verbose_name="Stock ajusté")
 
     class Meta:
         verbose_name = "Vente"
@@ -109,8 +110,35 @@ class Vente(models.Model):
         ordering = ['-date_vente']
 
     def save(self, *args, **kwargs):
+        # Calcul du total
         self.total = self.quantite * self.prix_unitaire
+        
+        # Gestion du stock
+        if self.pk:  # Si l'objet existe déjà
+            old_vente = Vente.objects.get(pk=self.pk)
+            old_statut = old_vente.statut
+        else:
+            old_statut = None
+        
         super().save(*args, **kwargs)
+        
+        # Ajuster le stock après sauvegarde
+        if self.statut == 'terminée' and not self.stock_adjusted:
+            self.produit.stock -= self.quantite
+            self.produit.save()
+            self.stock_adjusted = True
+            super().save(update_fields=['stock_adjusted'])
+        elif self.statut == 'annulée' and self.stock_adjusted:
+            self.produit.stock += self.quantite
+            self.produit.save()
+            self.stock_adjusted = False
+            super().save(update_fields=['stock_adjusted'])
+        elif old_statut == 'terminée' and self.statut == 'annulée' and self.stock_adjusted:
+            # Si on annule une vente terminée, remettre le stock
+            self.produit.stock += self.quantite
+            self.produit.save()
+            self.stock_adjusted = False
+            super().save(update_fields=['stock_adjusted'])
 
     def __str__(self):
         return f"Vente de {self.produit} à {self.client} le {self.date_vente.strftime('%Y-%m-%d %H:%M:%S')}"
@@ -143,3 +171,11 @@ class Todo(models.Model):
 
     def __str__(self):
         return f"{self.get_type_action_display()} pour {self.client} le {self.date_action.strftime('%Y-%m-%d %H:%M')}"
+    
+
+class Utilisateur(models.Model):
+    nom = models.CharField(max_length=20)
+    mot_de_passe = models.CharField(max_length=50)
+    
+
+
