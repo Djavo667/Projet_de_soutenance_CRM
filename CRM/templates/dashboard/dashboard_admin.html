@@ -12,7 +12,7 @@
             <div class="card text-white bg-primary">
                 <div class="card-body">
                     <h5 class="card-title">CA Aujourd'hui</h5>
-                    <p class="card-text">{{ ca_today }} €</p>
+                    <p class="card-text">{{ ca_today }} Francs CFA</p>
                 </div>
             </div>
         </div>
@@ -20,7 +20,7 @@
             <div class="card text-white bg-success">
                 <div class="card-body">
                     <h5 class="card-title">CA Mois</h5>
-                    <p class="card-text">{{ ca_month }} €</p>
+                    <p class="card-text">{{ ca_month }} Francs CFA</p>
                 </div>
             </div>
         </div>
@@ -28,7 +28,7 @@
             <div class="card text-white bg-info">
                 <div class="card-body">
                     <h5 class="card-title">CA Année</h5>
-                    <p class="card-text">{{ ca_year }} €</p>
+                    <p class="card-text">{{ ca_year }} Francs CFA</p>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
                     {% for client in top_clients %}
                     <tr>
                         <td>{{ client.prenom }} {{ client.nom }}</td>
-                        <td>{{ client.total_achats }} €</td>
+                        <td>{{ client.total_achats }} Francs CFA</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -70,7 +70,7 @@
                     {% for vendeur in top_vendeurs %}
                     <tr>
                         <td>{{ vendeur.vendeur__username }}</td>
-                        <td>{{ vendeur.total_ventes }} €</td>
+                        <td>{{ vendeur.total_ventes }} Francs CFA</td>
                     </tr>
                     {% endfor %}
                 </tbody>

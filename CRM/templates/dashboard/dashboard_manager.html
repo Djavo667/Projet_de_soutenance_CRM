@@ -12,7 +12,7 @@
             <div class="card text-white bg-info">
                 <div class="card-body">
                     <h5 class="card-title">CA Mois</h5>
-                    <p class="card-text">{{ ca_month }} €</p>
+                    <p class="card-text">{{ ca_month }} Francs CFA</p>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@
                 {% for client in top_clients %}
                 <tr>
                     <td>{{ client.nom }} {{ client.prenom }}</td>
-                    <td>{{ client.total_achats }} €</td>
+                    <td>{{ client.total_achats }} Francs CFA</td>
                     <td>{{ client.nbr_ventes }}</td>
                 </tr>
                 {% endfor %}
@@ -81,7 +81,7 @@
             {% for perf in perf_vendeurs %}
             <tr>
                 <td>{{ perf.vendeur__username }}</td>
-                <td>{{ perf.total_ventes }} €</td>
+                <td>{{ perf.total_ventes }} Francs CFA</td>
                 <td>{{ perf.nbr_ventes }}</td>
             </tr>
             {% endfor %}

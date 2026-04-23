@@ -77,14 +77,30 @@ WSGI_APPLICATION = 'CRM.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+from django.db.backends.base.base import BaseDatabaseWrapper
+BaseDatabaseWrapper.check_database_version_supported = lambda self: None
 
-
-DATABASES = { 
-    'default': {
+DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'gp',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#         },
+#     }
+     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+   
+
 
 
 # Password validation
@@ -127,3 +143,6 @@ STATICFILES_DIRS = [BASE_DIR / 'CRM/static']
 # Médias (images produits)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+# ... le reste de tes réglages ...
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
