@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Manager{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Dashboard Manager</h1>
+
+    <!-- Stats Globales -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h5 class="card-title">CA Mois</h5>
+                    <p class="card-text">{{ ca_month }} €</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <h5 class="card-title">Nombre de Ventes Mois</h5>
+                    <p class="card-text">{{ nbr_ventes_month }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Produit -->
+    <h3>Top produit le plus vendu</h3>
+    {% if top_produit %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">{{ top_produit.nom }} - {{ top_produit.marque }}</h5>
+            <p class="card-text">Catégorie : {{ top_produit.catégorie.nom }}</p>
+            <p class="card-text">Quantité vendue : {{ top_produit.total_quantite }}</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info">Aucun produit vendu trouvé.</div>
+    {% endif %}
+
+    <!-- Top 100 Clients -->
+    <h3>Top 100 des meilleurs clients</h3>
+    {% if top_clients %}
+    <div class="table-responsive mb-4">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Client</th>
+                    <th>Total achats</th>
+                    <th>Nombre de ventes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in top_clients %}
+                <tr>
+                    <td>{{ client.nom }} {{ client.prenom }}</td>
+                    <td>{{ client.total_achats }} €</td>
+                    <td>{{ client.nbr_ventes }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info">Aucun client avec achat trouvé.</div>
+    {% endif %}
+
+    <!-- Performance Vendeurs -->
+    <h3>Performance des Vendeurs (Mois)</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Vendeur</th>
+                <th>Total Ventes</th>
+                <th>Nombre de Ventes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for perf in perf_vendeurs %}
+            <tr>
+                <td>{{ perf.vendeur__username }}</td>
+                <td>{{ perf.total_ventes }} €</td>
+                <td>{{ perf.nbr_ventes }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

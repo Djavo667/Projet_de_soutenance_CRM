@@ -1,9 +1,76 @@
 {% extends "base.html" %}
-{% block title %} Accueil {% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block content %}
-    <h1>Mon outil CRM</h1>
-    <p>Bienvenue dans ce projet CRM!</p>
-    <p>Nombre de clients : {{ nbr_clients }}</p>
-    <p>Nom de la boutique : {{ nom_boutique }}</p>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="text-center mb-5">
+                <h1 class="display-4 text-primary mb-3">Mon outil CRM</h1>
+                <p class="lead text-muted">Bienvenue dans votre système de gestion de parfumerie</p>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <div class="card border-primary shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-people-fill text-primary fs-1 mb-3"></i>
+                            <h5 class="card-title">Clients</h5>
+                            <p class="card-text display-4 text-primary">{{ nbr_clients|default:"0" }}</p>
+                            <a href="{% url 'liste_clients' %}" class="btn btn-primary">
+                                <i class="bi bi-eye"></i> Voir les clients
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card border-success shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-shop text-success fs-1 mb-3"></i>
+                            <h5 class="card-title">Boutique</h5>
+                            <p class="card-text h5 text-success">{{ nom_boutique|default:"Ma Parfumerie" }}</p>
+                            <a href="{% url 'liste_produits' %}" class="btn btn-success">
+                                <i class="bi bi-box-seam"></i> Voir les produits
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="bi bi-lightning"></i> Actions rapides</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-2">
+                                <div class="col-md-3 col-sm-6">
+                                    <a href="{% url 'ajouter_client' %}" class="btn btn-outline-primary w-100">
+                                        <i class="bi bi-person-plus"></i><br>Ajouter Client
+                                    </a>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <a href="{% url 'ajouter_produit' %}" class="btn btn-outline-success w-100">
+                                        <i class="bi bi-plus-circle"></i><br>Ajouter Produit
+                                    </a>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <a href="{% url 'ajouter_vente' %}" class="btn btn-outline-info w-100">
+                                        <i class="bi bi-cart-plus"></i><br>Nouvelle Vente
+                                    </a>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <a href="{% url 'ajouter_todo' %}" class="btn btn-outline-warning w-100">
+                                        <i class="bi bi-check2-square"></i><br>Ajouter Tâche
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

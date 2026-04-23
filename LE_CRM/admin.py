@@ -62,7 +62,7 @@ class TodoAdmin(admin.ModelAdmin):
     list_filter = ("type_action", "statut", "date_action")
     ordering = ("-date_action",)
 
-@admin.register(Utilisateur)
-class UtilisateurAdmin(admin.ModelAdmin):
-    list_display = ("nom",)
-    search_fields = ("nom",)
+# @admin.register(Utilisateur)
+# class UtilisateurAdmin(admin.ModelAdmin):
+#     list_display = ("nom",)
+#     search_fields = ("nom",)

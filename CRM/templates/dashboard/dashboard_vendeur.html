@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Vendeur{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Dashboard Vendeur</h1>
+
+    <!-- KPI Personnelles -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">CA Personnel Aujourd'hui</h5>
+                    <p class="card-text">{{ ca_perso_today }} €</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5 class="card-title">CA Personnel Mois</h5>
+                    <p class="card-text">{{ ca_perso_month }} €</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dernières Transactions -->
+    <h3>Dernières Transactions</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Client</th>
+                <th>Quantité</th>
+                <th>Total</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vente in dernieres_ventes %}
+            <tr>
+                <td>{{ vente.produit.nom }}</td>
+                <td>{{ vente.client.prenom }} {{ vente.client.nom }}</td>
+                <td>{{ vente.quantite }}</td>
+                <td>{{ vente.total }} €</td>
+                <td>{{ vente.date_vente|date:"d/m/Y H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

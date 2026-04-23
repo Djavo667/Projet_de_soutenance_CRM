@@ -89,13 +89,17 @@ class Produit(models.Model):
 
 Produit.stock_disponible.boolean = True
 
+from django.contrib.auth.models import User
+
 class Vente(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name="Client")
     produit = models.ForeignKey(Produit, on_delete=models.CASCADE, verbose_name="Produit")
+    vendeur = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Vendeur")
     quantite = models.PositiveIntegerField(default=1, verbose_name="Quantité")
     prix_unitaire = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], verbose_name="Prix unitaire")
     total = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], editable=False, verbose_name="Total de la vente")
     date_vente = models.DateTimeField(default=timezone.now, verbose_name="Date de vente")
+    source = models.CharField(max_length=50, choices=[('boutique', 'Boutique'), ('tiktok', 'TikTok'), ('autre', 'Autre')], default='boutique', verbose_name="Source de la vente")
     statut_choix = [
         ('en_cours', 'En cours'),
         ('terminée', 'Terminée'),
@@ -173,9 +177,9 @@ class Todo(models.Model):
         return f"{self.get_type_action_display()} pour {self.client} le {self.date_action.strftime('%Y-%m-%d %H:%M')}"
     
 
-class Utilisateur(models.Model):
-    nom = models.CharField(max_length=20)
-    mot_de_passe = models.CharField(max_length=50)
+# class Utilisateur(models.Model):
+#     nom = models.CharField(max_length=20)
+#     mot_de_passe = models.CharField(max_length=50)
     
 
 

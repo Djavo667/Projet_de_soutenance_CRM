@@ -8,8 +8,13 @@ class ClientForm(forms.ModelForm):
         model = Client
         fields = ['nom', 'prenom', 'sexe', 'email', 'telephone', 'adresse', 'description']
         widgets = {
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'adresse': forms.TextInput(attrs={'class': 'form-control'}),
+            'nom': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nom du client'}),
+            'prenom': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Prénom du client'}),
+            'sexe': forms.Select(attrs={'class': 'form-select'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Adresse email'}),
+            'telephone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Téléphone'}),
+            'adresse': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Adresse complète'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description', 'rows': 3}),
         }
 
 class ProduitForm(forms.ModelForm):
@@ -30,13 +35,15 @@ class ProduitForm(forms.ModelForm):
 class VenteForm(forms.ModelForm):
     class Meta:
         model = Vente
-        fields = ['client', 'produit', 'quantite', 'prix_unitaire', 'statut']
+        fields = ['client', 'produit', 'vendeur', 'quantite', 'prix_unitaire', 'statut', 'source']
         widgets = {
             'client': forms.Select(attrs={'class': 'form-select'}),
             'produit': forms.Select(attrs={'class': 'form-select'}),
+            'vendeur': forms.Select(attrs={'class': 'form-select'}),
             'quantite': forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),
             'prix_unitaire': forms.NumberInput(attrs={'class': 'form-control'}),
             'statut': forms.Select(attrs={'class': 'form-select'}),
+            'source': forms.Select(attrs={'class': 'form-select'}),
         }
 
 
@@ -57,17 +64,3 @@ class TodoForm(forms.ModelForm):
         required=True,
         label='Date et heure',
     )   
-
-class CustomUserCreationForm(UserCreationForm):
-    password1 = forms.CharField(
-        label='Mot de passe', 
-        strip=False, 
-        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
-    )
-    password2 = forms.CharField(
-        label='Confirmer le mot de passe', 
-        strip=False, 
-        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
-    )
-    class Meta(UserCreationForm.Meta):
-        fields = UserCreationForm.Meta.fields + ('password1', 'password2')

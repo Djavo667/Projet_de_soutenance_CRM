@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Q
 from .forms import *
 from .models import *
 
 # Vue d'accueil du CRM
+@login_required(login_url='connexion')
 def home_page(request):
     nbr_clients = Client.objects.count()
     nom_boutique = "S_Cosmetique"
@@ -15,11 +18,16 @@ def home_page(request):
     return render(request, 'index.html', context=context)
 
 # Créer vue liste_clients pour afficher tous les clients
+@login_required(login_url='connexion')
 def liste_clients(request):
+    query = request.GET.get('q', '').strip()
     clients = Client.objects.all()
-    return render(request, 'list_clients.html', context={'data_clients': clients})
+    if query:
+        clients = clients.filter(telephone__icontains=query)
+    return render(request, 'list_clients.html', context={'data_clients': clients, 'query': query})
 
 # Créer vue ajouter_client avec ClientForm
+@login_required(login_url='connexion')
 def ajouter_client(request):
     if request.method == 'POST':
         form = ClientForm(request.POST)
@@ -31,11 +39,20 @@ def ajouter_client(request):
     return render(request, 'add_client.html', context={'form': form})
 
 # Créer vue liste_produits pour afficher tous les produits
+@login_required(login_url='connexion')
 def liste_produits(request):
+    query = request.GET.get('q', '').strip()
     produits = Produit.objects.all()
-    return render(request, 'list_produits.html', context={'produits': produits})
+    if query:
+        produits = produits.filter(
+            Q(nom__icontains=query) |
+            Q(marque__icontains=query) |
+            Q(**{'catégorie__nom__icontains': query})
+        )
+    return render(request, 'list_produits.html', context={'produits': produits, 'query': query})
 
 # Créer vue ajouter_produit avec ProduitForm
+@login_required(login_url='connexion')
 def ajouter_produit(request):
     if request.method == 'POST':
         form = ProduitForm(request.POST, request.FILES)
@@ -47,11 +64,13 @@ def ajouter_produit(request):
     return render(request, 'ajouter_produit.html', context={'form': form})
 
 # Créer vue liste_ventes pour afficher toutes les ventes
+@login_required(login_url='connexion')
 def liste_ventes(request):
     ventes = Vente.objects.select_related('client', 'produit').all()
     return render(request, 'list_ventes.html', context={'ventes': ventes})
 
 # Créer vue ajouter_vente avec VenteForm
+@login_required(login_url='connexion')
 def ajouter_vente(request):
     if request.method == 'POST':
         form = VenteForm(request.POST)
@@ -63,6 +82,7 @@ def ajouter_vente(request):
     return render(request, 'ajouter_vente.html', context={'form': form})
 
 # Modifier le statut d'une vente existante
+@login_required(login_url='connexion')
 def changer_statut_vente(request, vente_id):
     vente = get_object_or_404(Vente, id=vente_id)
     if request.method == 'POST':
@@ -73,11 +93,13 @@ def changer_statut_vente(request, vente_id):
     return redirect('liste_ventes')
 
 # Liste des tâches à faire avec les clients
+@login_required(login_url='connexion')
 def todo_list(request):
     todos = Todo.objects.select_related('client').all()
     return render(request, 'todo_list.html', context={'todos': todos})
 
 # Ajouter une tâche à la to-do list client
+@login_required(login_url='connexion')
 def ajouter_todo(request):
     if request.method == 'POST':
         form = TodoForm(request.POST)
@@ -89,6 +111,7 @@ def ajouter_todo(request):
     return render(request, 'add_todo.html', context={'form': form})
 
 # Marquer une tâche comme effectuée
+@login_required(login_url='connexion')
 def marquer_todo_effectue(request, todo_id):
     todo = get_object_or_404(Todo, id=todo_id)
     if request.method == 'POST':
@@ -96,38 +119,31 @@ def marquer_todo_effectue(request, todo_id):
         todo.save()
     return redirect('todo_list')
 
-# Recherche d'un client par téléphone
-def tracking(request):
-    message = ''
-    client_trouve = None
-    if request.method == 'POST':
-        num_client = request.POST.get('num_client', '').strip()
-        try:
-            client_trouve = Client.objects.get(telephone=num_client)
-            message = f"Client trouvé : {client_trouve}"
-        except Client.DoesNotExist:
-            message = "Aucun client trouvé avec ce numéro."
-    return render(request, 'tracking.html', context={'message': message, 'client_trouve': client_trouve})
+@login_required(login_url='connexion')
+def deconnexion(request):
+    logout(request)
+    return redirect('connexion')
 
-
-def inscription(request):
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('connexion')
-    else:
-        form = CustomUserCreationForm()
-    return render(request, 'inscription.html', context={'form': form})
 
 def connexion(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            # Rediriger selon le groupe
+            if user.groups.filter(name='admin').exists():
+                return redirect('dashboard_admin')
+            elif user.groups.filter(name='vendeur').exists():
+                return redirect('dashboard_vendeur')
+            elif user.groups.filter(name='manager').exists():
+                return redirect('dashboard_manager')
+            else:
+                return redirect('index')  # Fallback
         else:
             error_message = "Nom d'utilisateur ou mot de passe incorrect."
             return render(request, 'connexion.html', context={'error_message': error_message})

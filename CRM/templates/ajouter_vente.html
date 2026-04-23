@@ -1,12 +1,80 @@
 {% extends "base.html" %}
-{% block title %} Ajouter une vente {% endblock %}
+{% block title %}Ajouter une vente{% endblock %}
 
 {% block content %}
-    <h1>Ajouter une vente</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form }}
-        <button type="submit">Enregistrer la vente</button>
-    </form>
-    <a href="/">Retour à l'accueil</a>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h2 class="h4 mb-0"><i class="bi bi-cart-plus"></i> Enregistrer une nouvelle vente</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.client.id_for_label }}" class="form-label">Client</label>
+                                {{ form.client }}
+                                {% if form.client.errors %}
+                                    <div class="text-danger small">{{ form.client.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.produit.id_for_label }}" class="form-label">Produit</label>
+                                {{ form.produit }}
+                                {% if form.produit.errors %}
+                                    <div class="text-danger small">{{ form.produit.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.quantite.id_for_label }}" class="form-label">Quantité</label>
+                                {{ form.quantite }}
+                                {% if form.quantite.errors %}
+                                    <div class="text-danger small">{{ form.quantite.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.prix_unitaire.id_for_label }}" class="form-label">Prix unitaire (€)</label>
+                                {{ form.prix_unitaire }}
+                                {% if form.prix_unitaire.errors %}
+                                    <div class="text-danger small">{{ form.prix_unitaire.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.date_vente.id_for_label }}" class="form-label">Date de vente</label>
+                            {{ form.date_vente }}
+                            {% if form.date_vente.errors %}
+                                <div class="text-danger small">{{ form.date_vente.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.source.id_for_label }}" class="form-label">Source</label>
+                            {{ form.source }}
+                            {% if form.source.errors %}
+                                <div class="text-danger small">{{ form.source.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-info">
+                                <i class="bi bi-check-circle"></i> Enregistrer la vente
+                            </button>
+                            <a href="{% url 'liste_ventes' %}" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Annuler
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

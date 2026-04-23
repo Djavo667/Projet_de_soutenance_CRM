@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Admin{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Dashboard Administrateur</h1>
+
+    <!-- KPI Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">CA Aujourd'hui</h5>
+                    <p class="card-text">{{ ca_today }} €</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5 class="card-title">CA Mois</h5>
+                    <p class="card-text">{{ ca_month }} €</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h5 class="card-title">CA Année</h5>
+                    <p class="card-text">{{ ca_year }} €</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Clients -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h3>Top Clients</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Total Achats</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in top_clients %}
+                    <tr>
+                        <td>{{ client.prenom }} {{ client.nom }}</td>
+                        <td>{{ client.total_achats }} €</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Top Vendeurs -->
+        <div class="col-md-6">
+            <h3>Top Vendeurs</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Vendeur</th>
+                        <th>Total Ventes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vendeur in top_vendeurs %}
+                    <tr>
+                        <td>{{ vendeur.vendeur__username }}</td>
+                        <td>{{ vendeur.total_ventes }} €</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Top Produits -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h3>Top Produits</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Quantité Vendue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for produit in top_produits %}
+                    <tr>
+                        <td>{{ produit.nom }}</td>
+                        <td>{{ produit.total_vendu }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Graphique -->
+        <div class="col-md-6">
+            <h3>Évolution des Ventes</h3>
+            <canvas id="ventesChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('ventesChart').getContext('2d');
+    const data = {{ ventes_par_mois|safe }};
+    const labels = data.map(item => `Mois ${item.month}`);
+    const values = data.map(item => item.total);
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Ventes par Mois',
+                data: values,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            }]
+        },
+        options: {
+            responsive: true,
+        }
+    });
+</script>
+{% endblock %}

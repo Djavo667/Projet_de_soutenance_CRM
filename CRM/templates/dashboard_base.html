@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block layout %}
+<!-- Layout Dashboard avec Sidebar et footer en bas -->
+<div class="d-flex flex-column min-vh-100">
+    <!-- Layout principal avec sidebar -->
+    <div class="d-flex flex-grow-1">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="bg-dark text-white vh-100" style="width: 250px;">
+            <div class="p-3">
+                <h5 class="text-center mb-4">Menu CRM</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2">
+                        {% if request.user.groups.filter(name='admin').exists %}
+                            <a class="nav-link text-white" href="{% url 'dashboard_admin' %}">
+                                <i class="bi bi-house-door"></i> Dashboard
+                            </a>
+                        {% elif request.user.groups.filter(name='vendeur').exists %}
+                            <a class="nav-link text-white" href="{% url 'dashboard_vendeur' %}">
+                                <i class="bi bi-house-door"></i> Dashboard
+                            </a>
+                        {% elif request.user.groups.filter(name='manager').exists %}
+                            <a class="nav-link text-white" href="{% url 'dashboard_manager' %}">
+                                <i class="bi bi-house-door"></i> Dashboard
+                            </a>
+                        {% else %}
+                            <a class="nav-link text-white" href="{% url 'index' %}">
+                                <i class="bi bi-house-door"></i> Dashboard
+                            </a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white" href="{% url 'liste_clients' %}">
+                            <i class="bi bi-people"></i> Clients
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white" href="{% url 'liste_produits' %}">
+                            <i class="bi bi-box-seam"></i> Produits
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white" href="{% url 'liste_ventes' %}">
+                            <i class="bi bi-receipt"></i> Ventes
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white" href="{% url 'todo_list' %}">
+                            <i class="bi bi-check2-square"></i> To-Do List
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Contenu principal -->
+        <div class="flex-grow-1 d-flex flex-column">
+            <!-- Navbar supérieure -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+                <div class="container-fluid">
+                    <button class="btn btn-outline-secondary d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <span class="navbar-brand mb-0 h1">{% block page_title %}Dashboard{% endblock %}</span>
+                    <div class="d-flex">
+                        <span class="navbar-text me-3">Bienvenue, {{ user.username }}</span>
+                        <a href="{% url 'deconnexion' %}" class="btn btn-outline-primary btn-sm">Déconnexion</a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Contenu de la page -->
+            <div class="p-4 flex-grow-1">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer collé en bas -->
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <p class="mb-0">Copyright © 2026 CRM_Parfumerie. Tous droits réservés à Souleymane Maïga, Ousmane Konaté, Assétou Ndiaye.</p>
+    </footer>
+</div>
+{% endblock %}

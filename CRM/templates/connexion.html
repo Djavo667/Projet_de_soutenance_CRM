@@ -1,28 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription</title>
-</head>
-<body>
-    <div class="container">
-            <div class="form">
-                <h1> Se connecter </h1>
-                <form method="post" action="{% url 'connexion' %}">
-                    {% csrf_token %}
-                    <label for="username">Nom d'utilisateur :</label>
-                    <input type="text" id="username" name="username" required>
-                    <label for="password">Mot de passe :</label>
-                    <input type="password" id="password" name="password" required>
-                    {% if error_message %}
-                        <p style="color: red;"><strong>{{ error_message }}</strong></p>
-                    {% endif %}
-                    <button type="submit">Se connecter</button>
-                </form>
-                <p class="link"> Pas encore inscrit? <a href="{% url 'inscription' %}">S'inscrire</a></p>
+{% extends "base.html" %}
+{% block title %}Connexion{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h2 class="h4 mb-0"><i class="bi bi-box-arrow-in-right"></i> Se connecter</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'connexion' %}">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nom d'utilisateur</label>
+                            <input type="text" id="username" name="username" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" id="password" name="password" class="form-control" required>
+                        </div>
+
+                        {% if error_message %}
+                            <div class="alert alert-danger" role="alert">
+                                <i class="bi bi-exclamation-triangle"></i> {{ error_message }}
+                            </div>
+                        {% endif %}
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-box-arrow-in-right"></i> Se connecter
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center text-muted">
+                    <small>Accès sécurisé à votre CRM</small>
+                </div>
             </div>
+        </div>
     </div>
-    
-</body>
-</html>
+</div>
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends 'dashboard_base.html' %}
+
+{% block page_title %}Dashboard Administrateur{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="mb-4">Vue d'ensemble</h2>
+
+    <!-- KPI Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-primary shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-cash-stack text-primary fs-1 mb-2"></i>
+                    <h5 class="card-title">CA Aujourd'hui</h5>
+                    <p class="card-text display-6 text-primary">{{ ca_today|default:"0" }} €</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-success shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-graph-up text-success fs-1 mb-2"></i>
+                    <h5 class="card-title">CA Mois</h5>
+                    <p class="card-text display-6 text-success">{{ ca_month|default:"0" }} €</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-info shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-calendar-check text-info fs-1 mb-2"></i>
+                    <h5 class="card-title">CA Année</h5>
+                    <p class="card-text display-6 text-info">{{ ca_year|default:"0" }} €</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-warning shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-people-fill text-warning fs-1 mb-2"></i>
+                    <h5 class="card-title">Total Clients</h5>
+                    <p class="card-text display-6 text-warning">{{ total_clients|default:"0" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Graphiques et Tableaux -->
+    <div class="row">
+        <!-- Top Clients -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-trophy"></i> Top Clients</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Total Achats</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for client in top_clients %}
+                                <tr>
+                                    <td>{{ client.nom }} {{ client.prenom }}</td>
+                                    <td>{{ client.total_achats }} €</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="2" class="text-center text-muted">Aucun client trouvé</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Produits les plus vendus -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-star"></i> Produits les plus vendus</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Produit</th>
+                                    <th>Quantité vendue</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for produit in top_produits %}
+                                <tr>
+                                    <td>{{ produit.nom }}</td>
+                                    <td>{{ produit.quantite_vendue }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="2" class="text-center text-muted">Aucun produit trouvé</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions rapides -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0"><i class="bi bi-lightning"></i> Actions rapides</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="{% url 'ajouter_client' %}" class="btn btn-primary">
+                            <i class="bi bi-person-plus"></i> Ajouter Client
+                        </a>
+                        <a href="{% url 'ajouter_produit' %}" class="btn btn-success">
+                            <i class="bi bi-plus-circle"></i> Ajouter Produit
+                        </a>
+                        <a href="{% url 'ajouter_vente' %}" class="btn btn-info">
+                            <i class="bi bi-cart-plus"></i> Nouvelle Vente
+                        </a>
+                        <a href="{% url 'ajouter_todo' %}" class="btn btn-warning">
+                            <i class="bi bi-check2-square"></i> Ajouter Tâche
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

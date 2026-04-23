@@ -1,14 +1,103 @@
 # CRM Parfum
 
-CRM Parfum est un petit projet Django de gestion de clients, produits, ventes et tâches commerciales. Il permet de suivre des clients, d'enregistrer des produits et des ventes, et d'organiser une to-do list des actions commerciales (appels, SMS, emails, rendez-vous).
+CRM Parfum est un projet Django complet pour gérer un CRM de parfumerie. Ce CRM permet de gérer les clients, les produits, les ventes et les actions commerciales dans une interface simple avec des tableaux de bord et une authentification basée sur des groupes.
 
-## Prérequis
+## Présentation du projet
 
-- Python 3.11 ou 3.12
-- Git
-- Un terminal PowerShell ou Bash
+Le projet est construit autour de deux applications principales :
 
-## Installation
+- `CRM/` : le projet Django principal avec la configuration globale et les templates communs.
+- `LE_CRM/` : l'application métier qui contient les modèles, les formulaires, les vues et les routes pour le CRM.
+- `dashboard/` : l'application contenant des dashboards spécifiques pour les groupes `admin`, `vendeur` et `manager`.
+
+### Objectif
+
+Créer un CRM simple et fonctionnel pour une parfumerie, capable de :
+
+- Gérer les clients et leurs informations de contact.
+- Structurer les produits par catégorie, marque et stock.
+- Enregistrer des ventes avec calcul automatique du total et ajustement du stock.
+- Proposer une to-do list commerciale pour suivre les actions à réaliser.
+- Offrir des dashboards adaptés aux rôles utilisateurs.
+- Rechercher des clients et des produits facilement.
+
+## Architecture du projet
+
+### Modèles
+
+`LE_CRM/models.py` contient :
+
+- `Client` : nom, prénom, sexe, email, téléphone, adresse, description, statut actif.
+- `Catégorie` : catégories de parfums avec création automatique de valeurs par défaut.
+- `Produit` : nom, marque, catégorie, prix, description, stock, image, actif.
+- `Vente` : client, produit, vendeur (utilisateur Django), quantité, prix unitaire, total, date, source, statut, ajustement du stock.
+- `Todo` : tâches commerciales liées à un client, type d'action, date, statut et description.
+- `Utilisateur` : modèle additionnel non utilisé pour l'authentification Django standard.
+
+### Formulaires
+
+`LE_CRM/forms.py` utilise des `ModelForm` pour créer des formulaires Bootstrap-friendly pour :
+
+- création de clients
+- création de produits
+- création de ventes
+- création de tâches
+
+Les widgets sont personnalisés pour afficher des champs proprement dans les templates.
+
+### Vues
+
+`LE_CRM/views.py` gère :
+
+- l’affichage des listes de clients, produits, ventes et tâches.
+- l’ajout de clients, produits, ventes et tâches.
+- la recherche de clients par téléphone et de produits par nom/marque/catégorie.
+- le passage des ventes terminées et l'ajustement automatique du stock.
+- l’authentification et la déconnexion.
+
+`dashboard/views.py` gère :
+
+- `dashboard_admin` : statistiques globales, top clients, top vendeurs, top produits, CA journalier/mois/année.
+- `dashboard_vendeur` : CA personnel du jour et du mois, dernières ventes.
+- `dashboard_manager` : CA du mois, nombre de ventes, top 100 clients, top produit vendu, performance des vendeurs.
+
+### Templates
+
+Les templates utilisent Bootstrap 5 via CDN et sont organisés ainsi :
+
+- `CRM/templates/base.html` : layout principal, barre de navigation et footer.
+- `CRM/templates/dashboard_base.html` : layout dashboard avec sidebar.
+- `CRM/templates/list_clients.html` : liste clients avec barre de recherche par téléphone.
+- `CRM/templates/list_produits.html` : liste produits avec barre de recherche par nom/marque/catégorie.
+- `CRM/templates/add_todo.html` : formulaire de tâche commerciale.
+- `CRM/templates/dashboard/*.html` : dashboards selon les rôles.
+
+### Routes principales
+
+`CRM/urls.py` expose :
+
+- `/` → page d'accueil
+- `/connexion/` → page de connexion
+- `/deconnexion/` → déconnexion
+- `/list_clients/` → liste des clients
+- `/ajouter_client/` → ajout d’un client
+- `/list_produits/` → liste des produits
+- `/ajouter_produit/` → ajout d’un produit
+- `/list_ventes/` → liste des ventes
+- `/ajouter_vente/` → ajout d’une vente
+- `/vente_status/<int:vente_id>/` → changer le statut d’une vente
+- `/todo/` → liste des tâches
+- `/ajouter_todo/` → ajout d'une tâche
+- `/todo/termine/<int:todo_id>/` → marquer une tâche terminée
+- `/dashboard/` → inclut les dashboards par rôle
+
+Dashboard :
+
+- `/dashboard/admin/`
+- `/dashboard/vendeur/`
+- `/dashboard/manager/`
+
+## Installation pas-à-pas
 
 1. Cloner le dépôt :
 
@@ -50,86 +139,63 @@ python -m pip install -r requirements.txt
 python manage.py migrate
 ```
 
-6. Lancer le serveur de développement :
+6. Créer un superutilisateur si nécessaire :
+
+```bash
+python manage.py createsuperuser
+```
+
+7. Lancer le serveur de développement :
 
 ```bash
 python manage.py runserver
 ```
 
-7. Ouvrir le navigateur :
+8. Ouvrir l’application :
 
-```
+```text
 http://127.0.0.1:8000/
 ```
 
-## Structure du projet
+## Comment le projet a été construit
 
-```text
-CRM Parfum/
-├── CRM/                # Projet Django principal
-│   ├── settings.py     # Configuration du projet
-│   ├── urls.py         # Routes globales
-│   ├── wsgi.py
-│   ├── asgi.py
-│   └── templates/      # Templates HTML partagés
-├── LE_CRM/             # Application CRM
-│   ├── models.py       # Modèles de données
-│   ├── views.py        # Vues Django
-│   ├── forms.py        # Formulaires Django
-│   ├── admin.py        # Interface d'administration
-│   └── migrations/     # Fichiers de migration de la base
-├── db.sqlite3          # Base de données SQLite (doit être ignorée)
-├── manage.py           # Script d'administration Django
-├── requirements.txt    # Dépendances Python
-├── .gitignore          # Fichiers exclus du dépôt
-└── README.md           # Documentation du projet
-```
+1. Création du projet Django et de l’application métier `LE_CRM`.
+2. Définition des modèles principaux : clients, catégories, produits, ventes et tâches.
+3. Ajout de la logique de calcul automatique du total de vente et de l’ajustement du stock dans `Vente.save()`.
+4. Mise en place d’un formulaire Django pour chaque modèle en utilisant `ModelForm`.
+5. Création de vues pour afficher, ajouter et filtrer les données.
+6. Intégration de l’authentification Django et redirection selon le groupe de l’utilisateur.
+7. Construction de dashboards spécifiques pour les rôles `admin`, `vendeur` et `manager`.
+8. Ajout d’une interface Bootstrap 5 dans les templates pour un rendu propre et responsive.
+9. Ajout de fonctions de recherche dans les listes clients et produits.
+10. Nettoyage du projet : suppression des anciennes vues de tracking et amélioration de l’UX.
 
-## Fonctionnalités principales
+## Bonnes pratiques et remarques
 
-- Gestion des clients
-- Gestion des produits (parfums, catégories, prix, stock)
-- Gestion des ventes avec statut
-- To-do list commerciale pour appels, SMS, emails et rendez-vous
-- Interface d'administration Django
+- Ne jamais exposer `SECRET_KEY` et `DEBUG=True` en production.
+- Pour un projet réel, limiter `ALLOWED_HOSTS`.
+- Ajouter les fichiers media et la base SQLite au `.gitignore`.
+- Tester les scripts avec `python manage.py check` et `python manage.py makemigrations` avant tout commit.
 
-## Points importants
+## Améliorations possibles
 
-- Le projet utilise SQLite par défaut.
-- `CRM/settings.py` contient un `SECRET_KEY` hardcodé. Pour un usage en production, il faut externaliser ce secret dans une variable d'environnement.
-- `DEBUG = True` est acceptable en développement, mais pas en production.
+- Ajouter des permissions fines par groupe et par action.
+- Améliorer la lisibilité des tableaux avec pagination.
+- Ajouter des graphiques JavaScript dans le dashboard.
+- Permettre l’upload d’images produit avec une gestion plus robuste du média.
+- Mettre en place un système de notifications pour les tâches à venir.
 
-## Nettoyage du dépôt Git
-
-Si `db.sqlite3` ou `media/` sont déjà suivis par Git, exécutez :
+## Vérification rapide
 
 ```bash
-git rm --cached db.sqlite3
-git rm --cached -r media
+python manage.py check
+python manage.py migrate
+python manage.py runserver
 ```
 
-Si votre environnement virtuel est suivi, retirez-le aussi :
+Ensuite, connectez-vous et utilisez les dashboards par rôle pour vérifier :
 
-```bash
-git rm --cached -r mon_env
-```
-
-Ensuite ajoutez les nouveaux fichiers et validez :
-
-```bash
-git add .gitignore requirements.txt README.md
-git commit -m "Cleanup repository and add docs/configuration files"
-git push
-```
-
-## Vérifications
-
-- `git ls-files` montre que `db.sqlite3` et `media/produits/Dior_sauvage.jpg` étaient suivis. Ils doivent être retirés du dépôt.
-- `python manage.py check` est passé avec succès.
-- Les dépendances minimales réelles sont : `Django==6.0.4` et `Pillow==12.2.0`.
-
-## Recommandations
-
-- Ne pas committer `db.sqlite3` ni les fichiers `media/` générés.
-- Ajouter un `.env` local pour les variables sensibles en production.
-- Mettre à jour `ALLOWED_HOSTS` avant toute publication publique.
+- l’affichage des clients et la recherche par téléphone,
+- l’affichage des produits et la recherche par marque/nom/catégorie,
+- l’ajout de ventes et l’ajustement du stock,
+- le top produit vendu et les 100 meilleurs clients sur le dashboard manager.
