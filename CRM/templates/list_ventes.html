@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Liste des ventes{% endblock %}
+{% block title %}Liste des commandes{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h2">Liste des ventes</h1>
+        <h1 class="h2">Liste des commandes</h1>
         <a href="{% url 'ajouter_vente' %}" class="btn btn-info">
-            <i class="bi bi-cart-plus"></i> Ajouter une nouvelle vente
+            <i class="bi bi-cart-plus"></i> Ajouter une nouvelle commande
         </a>
     </div>
 
@@ -28,31 +28,31 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for vente in ventes %}
+                            {% for commande in ventes %}
                                 <tr>
-                                    <td>{{ vente.client.nom }} {{ vente.client.prenom }}</td>
-                                    <td>{{ vente.produit.nom }}</td>
-                                    <td>{{ vente.quantite }}</td>
-                                    <td>{{ vente.prix_unitaire }} €</td>
-                                    <td><strong>{{ vente.total }} €</strong></td>
+                                    <td>{{ commande.client.nom }} {{ commande.client.prenom }}</td>
+                                    <td>{{ commande.produit.nom }}</td>
+                                    <td>{{ commande.quantite }}</td>
+                                    <td>{{ commande.prix_unitaire }} FCFA</td>
+                                    <td><strong>{{ commande.total }} FCFA</strong></td>
                                     <td>
-                                        {% if vente.statut == 'terminée' %}
+                                        {% if commande.statut == 'terminée' %}
                                             <span class="badge bg-success">Terminée</span>
-                                        {% elif vente.statut == 'annulée' %}
+                                        {% elif commande.statut == 'annulée' %}
                                             <span class="badge bg-danger">Annulée</span>
                                         {% else %}
                                             <span class="badge bg-warning">En cours</span>
                                         {% endif %}
                                     </td>
-                                    <td>{{ vente.date_vente|date:"d/m/Y" }}</td>
+                                    <td>{{ commande.date_vente|date:"d/m/Y" }}</td>
                                     <td>
-                                        <form method="post" action="{% url 'changer_statut_vente' vente.id %}" class="d-inline">
+                                        <form method="post" action="{% url 'changer_statut_vente' commande.id %}" class="d-inline">
                                             {% csrf_token %}
                                             <div class="input-group input-group-sm">
                                                 <select name="statut" class="form-select">
-                                                    <option value="en_cours" {% if vente.statut == 'en_cours' %}selected{% endif %}>En cours</option>
-                                                    <option value="terminée" {% if vente.statut == 'terminée' %}selected{% endif %}>Terminée</option>
-                                                    <option value="annulée" {% if vente.statut == 'annulée' %}selected{% endif %}>Annulée</option>
+                                                    <option value="en_cours" {% if commande.statut == 'en_cours' %}selected{% endif %}>En cours</option>
+                                                    <option value="terminée" {% if commande.statut == 'terminée' %}selected{% endif %}>Terminée</option>
+                                                    <option value="annulée" {% if commande.statut == 'annulée' %}selected{% endif %}>Annulée</option>
                                                 </select>
                                                 <button type="submit" class="btn btn-outline-primary btn-sm">
                                                     <i class="bi bi-check"></i>
@@ -69,7 +69,7 @@
         </div>
     {% else %}
         <div class="alert alert-info" role="alert">
-            <i class="bi bi-info-circle"></i> Aucune vente enregistrée.
+            <i class="bi bi-info-circle"></i> Aucune commande enregistrée.
         </div>
     {% endif %}
 

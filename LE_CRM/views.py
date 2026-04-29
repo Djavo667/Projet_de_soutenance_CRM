@@ -33,7 +33,12 @@ def ajouter_client(request):
         form = ClientForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Client ajouté avec succès.')
             return redirect('liste_clients')
+        else:
+            messages.error(request, 'Veuillez corriger les erreurs dans le formulaire.')
+            # Debug: Afficher les erreurs du formulaire
+            print("Erreurs du formulaire Client:", form.errors)
     else:
         form = ClientForm()
     return render(request, 'add_client.html', context={'form': form})
@@ -54,11 +59,18 @@ def liste_produits(request):
 # Créer vue ajouter_produit avec ProduitForm
 @login_required(login_url='connexion')
 def ajouter_produit(request):
+    # Assurer que les catégories par défaut existent
+    Catégorie.creer_categories_parfum()
     if request.method == 'POST':
         form = ProduitForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Produit ajouté avec succès.')
             return redirect('liste_produits')
+        else:
+            messages.error(request, 'Veuillez corriger les erreurs dans le formulaire.')
+            # Debug: Afficher les erreurs du formulaire
+            print("Erreurs du formulaire Produit:", form.errors)
     else:
         form = ProduitForm()
     return render(request, 'ajouter_produit.html', context={'form': form})
@@ -76,7 +88,12 @@ def ajouter_vente(request):
         form = VenteForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Vente enregistrée avec succès.')
             return redirect('liste_ventes')
+        else:
+            messages.error(request, 'Veuillez corriger les erreurs dans le formulaire.')
+            # Debug: Afficher les erreurs du formulaire
+            print("Erreurs du formulaire Vente:", form.errors)
     else:
         form = VenteForm()
     return render(request, 'ajouter_vente.html', context={'form': form})
@@ -105,7 +122,12 @@ def ajouter_todo(request):
         form = TodoForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Tâche ajoutée avec succès.')
             return redirect('todo_list')
+        else:
+            messages.error(request, 'Veuillez corriger les erreurs dans le formulaire.')
+            # Debug: Afficher les erreurs du formulaire
+            print("Erreurs du formulaire Todo:", form.errors)
     else:
         form = TodoForm()
     return render(request, 'add_todo.html', context={'form': form})

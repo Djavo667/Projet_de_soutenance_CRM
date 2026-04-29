@@ -99,6 +99,8 @@ Dashboard :
 
 ## Installation pas-à-pas
 
+Le projet est désormais conçu pour fonctionner avec une base de données MySQL/MariaDB. Avant d’appliquer les migrations, vérifiez que votre serveur MySQL est accessible et que la section `DATABASES` de `CRM/settings.py` est configurée avec vos identifiants.
+
 1. Cloner le dépôt :
 
 ```bash
@@ -131,27 +133,41 @@ source mon_env/bin/activate
 ```bash
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
+python -m pip install mysqlclient
 ```
 
-5. Appliquer les migrations :
+5. Créer la base de données MySQL :
+
+```sql
+CREATE DATABASE gp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+6. Mettre à jour `CRM/settings.py` pour utiliser MySQL :
+
+- `ENGINE`: `django.db.backends.mysql`
+- `NAME`: nom de la base (par défaut `gp`)
+- `USER`, `PASSWORD`, `HOST`, `PORT`
+- éventuellement `OPTIONS`: `init_command` avec `STRICT_TRANS_TABLES`
+
+7. Appliquer les migrations :
 
 ```bash
 python manage.py migrate
 ```
 
-6. Créer un superutilisateur si nécessaire :
+8. Créer un superutilisateur si nécessaire :
 
 ```bash
 python manage.py createsuperuser
 ```
 
-7. Lancer le serveur de développement :
+9. Lancer le serveur de développement :
 
 ```bash
 python manage.py runserver
 ```
 
-8. Ouvrir l’application :
+10. Ouvrir l’application :
 
 ```text
 http://127.0.0.1:8000/
@@ -174,7 +190,8 @@ http://127.0.0.1:8000/
 
 - Ne jamais exposer `SECRET_KEY` et `DEBUG=True` en production.
 - Pour un projet réel, limiter `ALLOWED_HOSTS`.
-- Ajouter les fichiers media et la base SQLite au `.gitignore`.
+- Ne pas stocker les identifiants MySQL dans le dépôt : utilisez un fichier `.env` ou des variables d’environnement.
+- Ajouter les fichiers media au `.gitignore`.
 - Tester les scripts avec `python manage.py check` et `python manage.py makemigrations` avant tout commit.
 
 ## Améliorations possibles

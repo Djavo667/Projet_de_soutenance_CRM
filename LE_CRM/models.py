@@ -97,9 +97,9 @@ class Vente(models.Model):
     vendeur = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Vendeur")
     quantite = models.PositiveIntegerField(default=1, verbose_name="Quantité")
     prix_unitaire = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], verbose_name="Prix unitaire")
-    total = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], editable=False, verbose_name="Total de la vente")
-    date_vente = models.DateTimeField(default=timezone.now, verbose_name="Date de vente")
-    source = models.CharField(max_length=50, choices=[('boutique', 'Boutique'), ('tiktok', 'TikTok'), ('autre', 'Autre')], default='boutique', verbose_name="Source de la vente")
+    total = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], editable=False, verbose_name="Total de la commande")
+    date_vente = models.DateTimeField(default=timezone.now, verbose_name="Date de commande")
+    source = models.CharField(max_length=50, choices=[('boutique', 'Boutique'), ('tiktok', 'TikTok'), ('autre', 'Autre')], default='boutique', verbose_name="Source de la commande")
     statut_choix = [
         ('en_cours', 'En cours'),
         ('terminée', 'Terminée'),
@@ -109,8 +109,8 @@ class Vente(models.Model):
     stock_adjusted = models.BooleanField(default=False, verbose_name="Stock ajusté")
 
     class Meta:
-        verbose_name = "Vente"
-        verbose_name_plural = "Ventes"
+        verbose_name = "Commande"
+        verbose_name_plural = "Commandes"
         ordering = ['-date_vente']
 
     def save(self, *args, **kwargs):
@@ -145,7 +145,7 @@ class Vente(models.Model):
             super().save(update_fields=['stock_adjusted'])
 
     def __str__(self):
-        return f"Vente de {self.produit} à {self.client} le {self.date_vente.strftime('%Y-%m-%d %H:%M:%S')}"
+        return f"Commande de {self.produit} à {self.client} le {self.date_vente.strftime('%Y-%m-%d %H:%M:%S')}"
 
 
 class Todo(models.Model):
@@ -177,9 +177,7 @@ class Todo(models.Model):
         return f"{self.get_type_action_display()} pour {self.client} le {self.date_action.strftime('%Y-%m-%d %H:%M')}"
     
 
-# class Utilisateur(models.Model):
-#     nom = models.CharField(max_length=20)
-#     mot_de_passe = models.CharField(max_length=50)
+
     
 
 

@@ -22,24 +22,31 @@
                                 {% endif %}
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="{{ form.prix.id_for_label }}" class="form-label">Prix (Francs CFA)</label>
-                                {{ form.prix }}
-                                {% if form.prix.errors %}
-                                    <div class="text-danger small">{{ form.prix.errors }}</div>
+                                <label for="{{ form.marque.id_for_label }}" class="form-label">Marque</label>
+                                {{ form.marque }}
+                                {% if form.marque.errors %}
+                                    <div class="text-danger small">{{ form.marque.errors }}</div>
                                 {% endif %}
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="{{ form.categorie.id_for_label }}" class="form-label">Catégorie</label>
-                                {{ form.categorie }}
-                                {% if form.categorie.errors %}
-                                    <div class="text-danger small">{{ form.categorie.errors }}</div>
+                                <label for="{{ form.catégorie.id_for_label }}" class="form-label">Catégorie</label>
+                                {{ form.catégorie }}
+                                {% if form.catégorie.errors %}
+                                    <div class="text-danger small">{{ form.catégorie.errors }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="{{ form.stock.id_for_label }}" class="form-label">Stock initial</label>
+                                <label for="{{ form.prix.id_for_label }}" class="form-label">Prix (Francs CFA)</label>
+                                {{ form.prix }}
+                                {% if form.prix.errors %}
+                                    <div class="text-danger small">{{ form.prix.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.stock.id_for_label }}" class="form-label">Stock disponible</label>
                                 {{ form.stock }}
                                 {% if form.stock.errors %}
                                     <div class="text-danger small">{{ form.stock.errors }}</div>
@@ -60,6 +67,14 @@
                             {{ form.image }}
                             {% if form.image.errors %}
                                 <div class="text-danger small">{{ form.image.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            {{ form.actif }}
+                            <label for="{{ form.actif.id_for_label }}" class="form-check-label">Produit actif</label>
+                            {% if form.actif.errors %}
+                                <div class="text-danger small">{{ form.actif.errors }}</div>
                             {% endif %}
                         </div>
 

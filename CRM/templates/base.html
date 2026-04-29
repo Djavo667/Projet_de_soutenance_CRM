@@ -21,14 +21,17 @@
         <header class="bg-primary text-white p-3">
             <div class="container-fluid">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h1 class="h4 mb-0">Mon CRM</h1>
+                    <div>
+                        <h1 class="h4 mb-0">Mon CRM</h1>
+                        <small>Connecté en tant que <strong>{{ request.user.get_full_name|default:request.user.username }}</strong></small>
+                    </div>
                     <div class="d-flex align-items-center gap-3">
                         <nav>
                             <ul class="nav">
                                 <li class="nav-item"><a class="nav-link text-white" href="{% url 'index' %}">Accueil</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" href="{% url 'liste_clients' %}">Clients</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" href="{% url 'liste_produits' %}">Produits</a></li>
-                                <li class="nav-item"><a class="nav-link text-white" href="{% url 'liste_ventes' %}">Ventes</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" href="{% url 'liste_ventes' %}">Commandes</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" href="{% url 'todo_list' %}">To-Do List</a></li>
                             </ul>
                         </nav>
@@ -40,6 +43,16 @@
         {% endif %}
 
         <main class="flex-grow-1 container-fluid mt-4">
+            {% if messages %}
+                <div class="container-fluid mb-4">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
             {% block content %}{% endblock %}
         </main>
 
